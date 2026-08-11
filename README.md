@@ -77,9 +77,10 @@ Por eso:
 
 ## Actualización
 
-La lista se regenera desde la telemetría de la red de origen y se vuelve a publicar
-acá. La fecha de cada corrida está en la cabecera de cada archivo. Podés seguir el
-repo (*Watch*) para enterarte de los cambios.
+La lista se regenera automáticamente desde la telemetría de la red de origen y se
+vuelve a publicar acá cuando cambia. La fecha de la última actualización está en la
+cabecera de cada archivo. Podés seguir el repo (*Watch*) para enterarte de los
+cambios.
 
 ## Contribuir
 
