@@ -51,10 +51,62 @@ Después, **vos decidís** cómo usar la lista. El `.rsc` trae al final un ejemp
 regla de `drop`, comentado. Recomendación fuerte: **arrancar con `action=log`** unos
 días y recién después dropear (ver la advertencia de abajo).
 
+## Sincronización automática (recomendado)
+
+Importar la lista una vez sirve para probar, pero las IPs de C2 **rotan** y este feed
+se actualiza seguido. Para no quedarte con una lista vieja, **tenés que armar en tu
+MikroTik un script (tarea programada) que descargue la lista solo, 1 o 2 veces por
+día.** Se configura una vez y se olvida.
+
+### MikroTik — tarea programada (2 veces por día)
+
+Pegá esto **una sola vez** en la terminal del router (New Terminal en Winbox). Crea
+la tarea que baja el `.rsc` y lo reimporta cada 12 horas (2 veces por día). La llave
+`{` abierta después de `on-event=` hace que la terminal acepte el bloque multilínea
+de un solo pegado:
+
+```
+/system scheduler
+add name=badbox-c2-sync interval=12h comment="Sincroniza blocklist C2 BADBOX" on-event={
+    :do {
+        /tool fetch url="https://raw.githubusercontent.com/cstrucco/badbox-c2-blocklist/main/c2-badbox.rsc" mode=https dst-path=c2-badbox.rsc;
+        :delay 3s;
+        /import file-name=c2-badbox.rsc;
+    } on-error={
+        :log warning "badbox-c2-sync: fallo la descarga, se mantiene la lista anterior";
+    };
+}
+```
+
+- **`interval=12h`** = 2 veces por día. Para 1 vez por día poné `interval=1d`; si
+  querés más seguido, `6h`. Con 1 o 2 veces al día alcanza de sobra.
+- Si la descarga falla, el `on-error` **deja la lista anterior intacta** y lo avisa en
+  el log: nunca te quedás sin lista por un corte de red.
+- Probá la primera corrida a mano: `/system scheduler run badbox-c2-sync`
+
+Verificar que quedó andando:
+
+```
+/ip firewall address-list print where list=badbox-c2   ;# cuántas IPs cargó
+/log print where message~"badbox"                      ;# errores, si hubo
+/system scheduler print                                ;# cuándo corre de nuevo
+```
+
+> **Si la descarga falla por certificado** (algunos routers no traen las CAs para
+> validar el TLS de GitHub), agregá `check-certificate=no` al `fetch`. Eso baja la
+> seguridad de la descarga; usalo solo si no podés cargar las CAs en el router.
+
 ## Cómo usar en otros equipos
 
 - **iptables / nftables / pfSense / OPNsense**: importar `blocklist.txt` como
-  lista de IPs y aplicarla en una regla de bloqueo saliente.
+  lista de IPs y aplicarla en una regla de bloqueo saliente. Para sincronizar solo,
+  un cron que refresca la copia local cada 6 h:
+
+  ```
+  # /etc/cron.d/badbox-c2
+  0 */6 * * * root curl -fsS https://raw.githubusercontent.com/cstrucco/badbox-c2-blocklist/main/blocklist.txt -o /etc/badbox-c2.txt && <recargar tu firewall>
+  ```
+  (reemplazá `<recargar tu firewall>` por lo tuyo: `nft -f …`, `pfctl -f …`, etc.)
 - **Unbound / Pi-hole / RPZ**: este feed es de IPs; para dominios se puede armar uno
   aparte (ver *Contribuir*).
 
@@ -80,7 +132,7 @@ Por eso:
 La lista se regenera automáticamente desde la telemetría de la red de origen y se
 vuelve a publicar acá cuando cambia. La fecha de la última actualización está en la
 cabecera de cada archivo. Podés seguir el repo (*Watch*) para enterarte de los
-cambios.
+cambios. **Para que tu equipo la tome solo, ver [Sincronización automática](#sincronización-automática-recomendado) más arriba.**
 
 ## Contribuir
 
