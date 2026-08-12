@@ -1,0 +1,62 @@
+name: Reportar una IP de C2 de BADBOX
+description: Proponé agregar una IP de C2 nueva, o sacar una que ya no corresponde.
+title: "[C2] "
+labels: ["c2-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por colaborar. Cuantos más datos aportes, más rápido se puede
+        **verificar** antes de tocar la lista. Un reporte por IP, por favor.
+  - type: dropdown
+    id: accion
+    attributes:
+      label: ¿Qué querés proponer?
+      options:
+        - Agregar una IP nueva de C2
+        - Sacar una IP (ya no es C2 / falso positivo)
+    validations:
+      required: true
+  - type: input
+    id: ip
+    attributes:
+      label: IP
+      description: La dirección IP del C2 (una sola por reporte).
+      placeholder: "203.0.113.45"
+    validations:
+      required: true
+  - type: input
+    id: puertos
+    attributes:
+      label: Puerto(s) de destino observados
+      description: El/los puerto(s) hacia donde salen los equipos infectados.
+      placeholder: "9998, 2918"
+    validations:
+      required: false
+  - type: textarea
+    id: evidencia
+    attributes:
+      label: ¿Por qué la marcás? (evidencia)
+      description: >
+        Cómo la detectaste: sinkhole DNS, /tool torch, conexiones sostenidas a
+        puertos raros, cuántos equipos la contactan, misma firma que otras de la
+        lista, etc.
+      placeholder: "3 TV box Android en mi red salen sostenido a esta IP en el puerto 9998, misma firma que las de la lista..."
+    validations:
+      required: true
+  - type: input
+    id: asn
+    attributes:
+      label: ASN / organización (si lo sabés)
+      placeholder: "AS16276 OVH"
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirmaciones
+    attributes:
+      label: Confirmaciones
+      options:
+        - label: Verifiqué que es tráfico de BADBOX / Vo1d / Kimwolf y no un servicio legítimo alojado en una IP compartida.
+          required: true
+        - label: No incluí ningún dato privado de mis clientes (IPs internas, nombres, MACs, etc.).
+          required: true

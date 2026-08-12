@@ -190,8 +190,9 @@ cambios. **Para que tu equipo la tome solo, ver [Sincronización automática](#s
 ## Contribuir
 
 ¿Viste una IP de C2 de BADBOX en tu red que no está acá, o una que ya deberíamos
-sacar? Abrí un *Issue* con la IP, el puerto y por qué la marcás. Sumamos también
-dominios de C2 si hay interés.
+sacar? Abrí un *Issue*: hay una **plantilla** que te pide la IP, el puerto y la
+evidencia, así el reporte queda completo y se puede verificar rápido. Para reportar
+**dominios** de C2, abrí un Issue en blanco (los sumamos si hay interés).
 
 ## Fuente
 
