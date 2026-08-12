@@ -60,10 +60,19 @@ día.** Se configura una vez y se olvida.
 
 ### MikroTik — tarea programada (2 veces por día)
 
-Pegá esto **una sola vez** en la terminal del router (New Terminal en Winbox). Crea
-la tarea que baja el `.rsc` y lo reimporta cada 12 horas (2 veces por día). La llave
-`{` abierta después de `on-event=` hace que la terminal acepte el bloque multilínea
-de un solo pegado:
+Son dos pasos. El **paso 1 carga la lista ahora mismo** (así queda activa al toque, sin
+esperar a la primera corrida programada) y el **paso 2 la deja actualizándose sola**
+cada 12 horas. Pegá cada bloque en la terminal del router (New Terminal en Winbox).
+
+**Paso 1 — bajar la lista ya:**
+
+```
+/tool fetch url="https://raw.githubusercontent.com/cstrucco/badbox-c2-blocklist/main/c2-badbox.rsc" mode=https dst-path=c2-badbox.rsc
+/import c2-badbox.rsc
+```
+
+**Paso 2 — programar la actualización automática.** La llave `{` abierta después de
+`on-event=` hace que la terminal acepte el bloque multilínea de un solo pegado:
 
 ```
 /system scheduler
@@ -78,11 +87,12 @@ add name=badbox-c2-sync interval=12h comment="Sincroniza blocklist C2 BADBOX" on
 }
 ```
 
+- El **paso 1** deja la lista cargada de inmediato; el paso 2 la mantiene al día sola.
 - **`interval=12h`** = 2 veces por día. Para 1 vez por día poné `interval=1d`; si
   querés más seguido, `6h`. Con 1 o 2 veces al día alcanza de sobra.
 - Si la descarga falla, el `on-error` **deja la lista anterior intacta** y lo avisa en
   el log: nunca te quedás sin lista por un corte de red.
-- Probá la primera corrida a mano: `/system scheduler run badbox-c2-sync`
+- Para forzar una sincronización cuando quieras: `/system scheduler run badbox-c2-sync`
 
 Verificar que quedó andando:
 
@@ -95,6 +105,48 @@ Verificar que quedó andando:
 > **Si la descarga falla por certificado** (algunos routers no traen las CAs para
 > validar el TLS de GitHub), agregá `check-certificate=no` al `fetch`. Eso baja la
 > seguridad de la descarga; usalo solo si no podés cargar las CAs en el router.
+
+## Bloquear el tráfico a los C2 (MikroTik RAW)
+
+Cargar la lista **no bloquea nada por sí sola** — es solo un address-list. Para cortar
+de verdad hace falta una regla de firewall que descarte el tráfico hacia esas IPs. Como
+las TV box infectadas **salen** a buscar el C2, se bloquea el tráfico cuyo **destino**
+está en la lista. La cadena **RAW** es la más eficiente: descarta antes del seguimiento
+de conexiones, casi sin costo de CPU.
+
+**Recomendado: observar primero.** Varias IPs son de nube compartida (Alibaba, OVH,
+Google…), así que antes de cortar en una red en producción conviene mirar unos días
+quién cae en la lista (ver la advertencia más abajo). Esta regla **solo registra, no
+bloquea**:
+
+```
+/ip firewall raw
+add chain=prerouting action=log log-prefix="BADBOX-C2" dst-address-list=badbox-c2 comment="BADBOX C2 - observar"
+```
+
+Y mirás qué clientes aparecen y contra qué IP/puerto:
+
+```
+/log print where message~"BADBOX-C2"
+```
+
+**Cuando estés seguro, bloqueá.** Agregá el `drop` (destino y origen). Podés dejar o
+sacar la regla de log de arriba:
+
+```
+/ip firewall raw
+add chain=prerouting action=drop dst-address-list=badbox-c2 comment="BADBOX C2 - salida bloqueada"
+add chain=prerouting action=drop src-address-list=badbox-c2 comment="BADBOX C2 - entrada bloqueada"
+```
+
+Verificar cuánto está agarrando (contador de paquetes):
+
+```
+/ip firewall raw print stats where comment~"BADBOX"
+```
+
+> Si ya tenés reglas `accept` en la cadena RAW, asegurate de que estos `drop` queden
+> **antes** (`/ip firewall raw move`), o no llegan a actuar.
 
 ## Cómo usar en otros equipos
 
