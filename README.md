@@ -39,17 +39,18 @@ contactar de verdad, con el puerto y a nombre de quién está la IP.
 
 ## Cómo usar en MikroTik
 
-Descargar el `.rsc` al router e importarlo. Crea/actualiza el address-list
-`badbox-c2` (no dropea nada por sí solo):
+Para probarla rápido, descargá el `.rsc` al router e importalo:
 
 ```
-/tool fetch url="https://raw.githubusercontent.com/cstrucco/badbox-c2-blocklist/main/c2-badbox.rsc" mode=https
+/tool fetch url="https://raw.githubusercontent.com/cstrucco/badbox-c2-blocklist/main/c2-badbox.rsc" mode=https dst-path=c2-badbox.rsc
 /import c2-badbox.rsc
 ```
 
-Después, **vos decidís** cómo usar la lista. El `.rsc` trae al final un ejemplo de
-regla de `drop`, comentado. Recomendación fuerte: **arrancar con `action=log`** unos
-días y recién después dropear (ver la advertencia de abajo).
+Eso crea/actualiza el address-list `badbox-c2`, pero **todavía no bloquea nada** — un
+address-list es solo una lista. Los dos pasos que faltan están abajo:
+[**Sincronización automática**](#sincronización-automática-recomendado) para que se
+actualice sola, y [**Bloquear el tráfico a los C2**](#bloquear-el-tráfico-a-los-c2-mikrotik-raw)
+para cortar de verdad (empezando por observar con `log`).
 
 ## Sincronización automática (recomendado)
 
@@ -94,13 +95,11 @@ add name=badbox-c2-sync interval=12h comment="Sincroniza blocklist C2 BADBOX" on
   el log: nunca te quedás sin lista por un corte de red.
 - Para forzar una sincronización cuando quieras: `/system scheduler run badbox-c2-sync`
 
-Verificar que quedó andando:
+Verificar que quedó andando (corré una por una y mirá la salida):
 
-```
-/ip firewall address-list print where list=badbox-c2   ;# cuántas IPs cargó
-/log print where message~"badbox"                      ;# errores, si hubo
-/system scheduler print                                ;# cuándo corre de nuevo
-```
+- `/ip firewall address-list print where list=badbox-c2` → cuántas IPs cargó (deberían ser ~21)
+- `/log print where message~"badbox"` → si hubo algún error
+- `/system scheduler print` → cuándo corre la próxima vez
 
 > **Si la descarga falla por certificado** (algunos routers no traen las CAs para
 > validar el TLS de GitHub), agregá `check-certificate=no` al `fetch`. Eso baja la
@@ -114,24 +113,29 @@ las TV box infectadas **salen** a buscar el C2, se bloquea el tráfico cuyo **de
 está en la lista. La cadena **RAW** es la más eficiente: descarta antes del seguimiento
 de conexiones, casi sin costo de CPU.
 
-**Recomendado: observar primero.** Varias IPs son de nube compartida (Alibaba, OVH,
-Google…), así que antes de cortar en una red en producción conviene mirar unos días
-quién cae en la lista (ver la advertencia más abajo). Esta regla **solo registra, no
-bloquea**:
+Tenés **dos opciones**. Si es una red en producción, **empezá por la A**; cuando estés
+seguro, pasás a la B.
+
+### Opción A — Observar (recomendada para empezar)
+
+**Registra, NO bloquea.** Varias de estas IPs son de nube compartida (Alibaba, OVH,
+Google…), donde puede haber servicios legítimos. Con esta regla mirás unos días quién de
+tu red cae en la lista, sin cortarle nada a nadie:
 
 ```
 /ip firewall raw
 add chain=prerouting action=log log-prefix="BADBOX-C2" dst-address-list=badbox-c2 comment="BADBOX C2 - observar"
 ```
 
-Y mirás qué clientes aparecen y contra qué IP/puerto:
+Después revisás qué clientes aparecen y contra qué IP y puerto, con:
+`/log print where message~"BADBOX-C2"`
 
-```
-/log print where message~"BADBOX-C2"
-```
+Si son tus clientes hablando con el C2 (puertos raros y sostenidos, tipo `:9998`,
+`:2918`, `:7890`, `:1883`, `:18081`), ya podés pasar a bloquear.
 
-**Cuando estés seguro, bloqueá.** Agregá el `drop` (destino y origen). Podés dejar o
-sacar la regla de log de arriba:
+### Opción B — Bloquear
+
+**Corta el tráfico** hacia y desde esas IPs:
 
 ```
 /ip firewall raw
@@ -139,11 +143,8 @@ add chain=prerouting action=drop dst-address-list=badbox-c2 comment="BADBOX C2 -
 add chain=prerouting action=drop src-address-list=badbox-c2 comment="BADBOX C2 - entrada bloqueada"
 ```
 
-Verificar cuánto está agarrando (contador de paquetes):
-
-```
-/ip firewall raw print stats where comment~"BADBOX"
-```
+La regla de la Opción A la podés dejar (registra) o sacar. Para ver cuánto está agarrando
+el bloqueo, con: `/ip firewall raw print stats where comment~"BADBOX"`
 
 > Si ya tenés reglas `accept` en la cadena RAW, asegurate de que estos `drop` queden
 > **antes** (`/ip firewall raw move`), o no llegan a actuar.
@@ -171,13 +172,13 @@ que ver con la botnet.
 
 Por eso:
 
-1. **Empezá con `log`, no con `drop`.** Mirá qué clientes tuyos caen en la lista y
-   qué puerto usan. El C2 de BADBOX usa puertos raros y sostenidos (`:9998`, `:2918`,
-   `:7890`, `:1883`, `:18081`…); el tráfico legítimo a esas nubes usa otros.
+1. **No dropees a ciegas.** Usá primero la **Opción A (observar con `log`)** de la
+   sección de bloqueo para confirmar que son tus clientes hablando con el C2 y no
+   tráfico legítimo a esas nubes.
 2. **Validá antes de cortar en producción.** Esta lista es un punto de partida, no
    una verdad absoluta.
 3. Las IPs de C2 **rotan**. Una IP de acá puede quedar limpia con el tiempo, y
-   aparecen nuevas. Actualizá seguido.
+   aparecen nuevas — por eso conviene la sincronización automática.
 
 ## Actualización
 
