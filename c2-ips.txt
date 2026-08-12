@@ -1,8 +1,9 @@
 # BADBOX 2.0 / Vo1d / Kimwolf -- IPs de servidores de control (C2)
-# 22 IPs -- actualizado 2026-08-12 01:46 UTC -- generado automaticamente
+# 26 IPs -- actualizado 2026-08-12 02:01 UTC -- generado automaticamente
 #
 8.222.223.201      # BADBOX2 C2 · :1883 · MQTT C2 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 15.204.53.165      # BADBOX2 C2 · :9929 · AS16276 OVH - OVH SAS, US
+34.41.139.193      # BADBOX2 C2 · :55500 · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US
 35.241.108.36      # BADBOX2 C2 · :7890 · proxy (Clash/Mihomo) · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US
 43.102.213.93      # BADBOX2 C2 · :279 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 43.134.123.123     # BADBOX2 C2 · :239,286 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
@@ -12,14 +13,17 @@
 46.8.9.226         # BADBOX2 C2 · :18081 · mineria Monero · AS60592 GRANSY - Gransy s.r.o., CZ
 46.8.9.227         # BADBOX2 C2 · :18081 · mineria Monero · AS60592 GRANSY - Gransy s.r.o., CZ
 46.62.150.144      # BADBOX2 C2 · :21 · AS24940 HETZNER-AS - Hetzner Online GmbH, DE
+47.76.118.67       # BADBOX2 C2 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, US
 47.84.75.112       # BADBOX2 C2 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, US
 47.253.5.149       # BADBOX2 C2 · :9377 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, US
 51.81.137.85       # BADBOX2 C2 · :9998 · AS16276 OVH - OVH SAS, US
 107.151.249.174    # BADBOX2 C2 · :9998 · AS62610 ZEN-DPS - Zenlayer Inc, US
+117.161.138.181    # BADBOX2 C2 · AS9808 CHINAMOBILE-CN - China Mobile Communicat, CN
 119.28.94.95       # BADBOX2 C2 · :9998 · AS132203 TENCENT-NET-AP-CN - Tencent Building, CN
 136.243.48.224     # BADBOX2 C2 · :9529 · AS24940 HETZNER-AS - Hetzner Online GmbH, DE
 144.217.195.210    # BADBOX2 C2 · :9903 · AS16276 OVH - OVH SAS, CA
 154.39.72.88       # BADBOX2 C2 · :2918 · AS40065 CNSERVERS - CNSERVERS LLC, US
 154.44.8.142       # BADBOX2 C2 · :18081 · mineria Monero · AS979 NETLAB-SDN - NetLab Global, US
 154.83.197.187     # BADBOX2 C2 · :9998 · AS135377 UCLOUD-HK-AS-AP - UCLOUD INFORMATION TEC, SC
+192.99.215.40      # BADBOX2 C2 · AS16276 OVH - OVH SAS, CA
 192.254.87.10      # BADBOX2 C2 · :9998 · AS21859 ZEN-ECN - Zenlayer Inc, US
