@@ -39,6 +39,8 @@ contactar de verdad, con el puerto y a nombre de quién está la IP.
 
 ## Cómo usar en MikroTik
 
+> ✅ Los comandos de esta sección están **probados en RouterOS 6 y 7**.
+
 Para probarla rápido, descargá el `.rsc` al router e importalo:
 
 ```
