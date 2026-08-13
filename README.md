@@ -48,11 +48,11 @@ Para probarla rápido, descargá el `.rsc` al router e importalo:
 /import c2-badbox.rsc
 ```
 
-Eso crea/actualiza el address-list `badbox-c2`, pero **todavía no bloquea nada** — un
-address-list es solo una lista. Los dos pasos que faltan están abajo:
+Eso crea/actualiza el address-list `badbox-c2`, pero **todavía no hace nada** con él — un
+address-list es solo una lista. Lo que falta está abajo:
 [**Sincronización automática**](#sincronización-automática-recomendado) para que se
-actualice sola, y [**Bloquear el tráfico a los C2**](#bloquear-el-tráfico-a-los-c2-mikrotik-raw)
-para cortar de verdad (empezando por observar con `log`).
+actualice sola, y [**Reportar o bloquear con la lista**](#reportar-o-bloquear-con-la-lista-mikrotik-raw)
+para saber qué clientes tuyos están infectados, o cortar el tráfico.
 
 ## Sincronización automática (recomendado)
 
@@ -107,33 +107,48 @@ Verificar que quedó andando (corré una por una y mirá la salida):
 > validar el TLS de GitHub), agregá `check-certificate=no` al `fetch`. Eso baja la
 > seguridad de la descarga; usalo solo si no podés cargar las CAs en el router.
 
-## Bloquear el tráfico a los C2 (MikroTik RAW)
+## Reportar o bloquear con la lista (MikroTik RAW)
 
-Cargar la lista **no bloquea nada por sí sola** — es solo un address-list. Para cortar
-de verdad hace falta una regla de firewall que descarte el tráfico hacia esas IPs. Como
-las TV box infectadas **salen** a buscar el C2, se bloquea el tráfico cuyo **destino**
-está en la lista. La cadena **RAW** es la más eficiente: descarta antes del seguimiento
-de conexiones, casi sin costo de CPU.
+El address-list `badbox-c2` por sí solo no hace nada — es solo una lista. Con una regla
+en la cadena **RAW** la podés usar de dos formas: **reportar** qué clientes tuyos hablan
+con el C2 (sin cortarles nada), o **bloquear** ese tráfico. Como las TV box infectadas
+**salen** a buscar el C2, en los dos casos se mira el tráfico cuyo **destino** está en la
+lista. RAW es lo más eficiente: actúa antes del seguimiento de conexiones, casi sin costo
+de CPU.
 
-Tenés **dos opciones**. Si es una red en producción, **empezá por la A**; cuando estés
-seguro, pasás a la B.
+Si es una red en producción, **empezá por la A** (reportar): identificás a los infectados
+sin arriesgar cortarle el servicio a nadie.
 
-### Opción A — Observar (recomendada para empezar)
+### Opción A — Reporte de clientes que contactan el C2 (no corta)
 
-**Registra, NO bloquea.** Varias de estas IPs son de nube compartida (Alibaba, OVH,
-Google…), donde puede haber servicios legítimos. Con esta regla mirás unos días quién de
-tu red cae en la lista, sin cortarle nada a nadie:
+Ideal si **no querés bloquear todavía**, solo saber a quién llamar. Esta regla **no
+dropea nada**: cada vez que un cliente tuyo habla con una IP de la lista, mete la IP **de
+ese cliente** en un address-list aparte (`clientes-con-c2`). Esa lista es, literalmente,
+tu **reporte de equipos infectados**:
 
 ```
 /ip firewall raw
-add chain=prerouting action=log log-prefix="BADBOX-C2" dst-address-list=badbox-c2 comment="BADBOX C2 - observar"
+add chain=prerouting action=add-src-to-address-list address-list=clientes-con-c2 address-list-timeout=1d dst-address-list=badbox-c2 comment="BADBOX C2 - registrar cliente (no corta)"
 ```
 
-Después revisás qué clientes aparecen y contra qué IP y puerto, con:
-`/log print where message~"BADBOX-C2"`
+- Es **passthrough**: el tráfico del cliente sigue igual, no le cortás nada.
+- `address-list-timeout=1d`: el cliente queda listado 1 día desde su último contacto con
+  el C2. Si sigue infectado se renueva solo; si deja de hablar con el C2, cae de la lista.
 
-Si son tus clientes hablando con el C2 (puertos raros y sostenidos, tipo `:9998`,
-`:2918`, `:7890`, `:1883`, `:18081`), ya podés pasar a bloquear.
+Ver el reporte (tus clientes que contactaron un C2):
+
+```
+/ip firewall address-list print where list=clientes-con-c2
+```
+
+Cada entrada es la IP de un cliente tuyo. Para saber **quién** es cada uno, cruzá esa IP
+con tu propio DHCP / PPPoE / facturación. Así armás la lista de llamados **sin haberle
+cortado el servicio a nadie**.
+
+> ¿Querés ver también **a qué IP y puerto** habla cada uno? Sumá una regla de log:
+> `add chain=prerouting action=log log-prefix="BADBOX-C2" dst-address-list=badbox-c2` y
+> mirá `/log print where message~"BADBOX-C2"`. Los puertos de BADBOX son raros y
+> sostenidos (`:9998`, `:2918`, `:7890`, `:1883`, `:18081`).
 
 ### Opción B — Bloquear
 
@@ -145,10 +160,11 @@ add chain=prerouting action=drop dst-address-list=badbox-c2 comment="BADBOX C2 -
 add chain=prerouting action=drop src-address-list=badbox-c2 comment="BADBOX C2 - entrada bloqueada"
 ```
 
-La regla de la Opción A la podés dejar (registra) o sacar. Para ver cuánto está agarrando
-el bloqueo, con: `/ip firewall raw print stats where comment~"BADBOX"`
+Podés **combinar las dos**: si dejás la regla de la Opción A **antes** de los `drop`,
+seguís registrando al cliente infectado y además le cortás el C2. Para ver cuánto agarra
+el bloqueo: `/ip firewall raw print stats where comment~"BADBOX"`
 
-> Si ya tenés reglas `accept` en la cadena RAW, asegurate de que estos `drop` queden
+> Si ya tenés reglas `accept` en la cadena RAW, asegurate de que estas reglas queden
 > **antes** (`/ip firewall raw move`), o no llegan a actuar.
 
 ## Cómo usar en otros equipos
@@ -174,8 +190,8 @@ que ver con la botnet.
 
 Por eso:
 
-1. **No dropees a ciegas.** Usá primero la **Opción A (observar con `log`)** de la
-   sección de bloqueo para confirmar que son tus clientes hablando con el C2 y no
+1. **No dropees a ciegas.** Usá primero la **Opción A (reportar sin cortar)** de la
+   sección de arriba para confirmar que son tus clientes hablando con el C2 y no
    tráfico legítimo a esas nubes.
 2. **Validá antes de cortar en producción.** Esta lista es un punto de partida, no
    una verdad absoluta.
