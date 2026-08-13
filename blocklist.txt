@@ -1,5 +1,5 @@
 # BADBOX 2.0 / Vo1d / Kimwolf -- IPs de servidores de control (C2)
-# 26 IPs -- actualizado 2026-08-12 02:01 UTC -- generado automaticamente
+# 27 IPs -- actualizado 2026-08-13 09:01 UTC -- generado automaticamente
 8.222.223.201
 15.204.53.165
 34.41.139.193
@@ -24,5 +24,6 @@
 154.39.72.88
 154.44.8.142
 154.83.197.187
+185.93.89.72
 192.99.215.40
 192.254.87.10

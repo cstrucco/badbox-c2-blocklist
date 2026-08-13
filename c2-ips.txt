@@ -1,5 +1,5 @@
 # BADBOX 2.0 / Vo1d / Kimwolf -- IPs de servidores de control (C2)
-# 26 IPs -- actualizado 2026-08-12 02:01 UTC -- generado automaticamente
+# 27 IPs -- actualizado 2026-08-13 09:01 UTC -- generado automaticamente
 #
 8.222.223.201      # BADBOX2 C2 · :1883 · MQTT C2 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 15.204.53.165      # BADBOX2 C2 · :9929 · AS16276 OVH - OVH SAS, US
@@ -25,5 +25,6 @@
 154.39.72.88       # BADBOX2 C2 · :2918 · AS40065 CNSERVERS - CNSERVERS LLC, US
 154.44.8.142       # BADBOX2 C2 · :18081 · mineria Monero · AS979 NETLAB-SDN - NetLab Global, US
 154.83.197.187     # BADBOX2 C2 · :9998 · AS135377 UCLOUD-HK-AS-AP - UCLOUD INFORMATION TEC, SC
+185.93.89.72       # BADBOX2 C2 · :80 · AS213790 LimitedNetwork-AS - Limited Network LTD, IR
 192.99.215.40      # BADBOX2 C2 · AS16276 OVH - OVH SAS, CA
 192.254.87.10      # BADBOX2 C2 · :9998 · AS21859 ZEN-ECN - Zenlayer Inc, US

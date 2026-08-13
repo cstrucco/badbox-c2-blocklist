@@ -1,5 +1,5 @@
 # BADBOX 2.0 / Vo1d / Kimwolf -- IPs de servidores de control (C2)
-# 26 IPs -- 2026-08-12 02:01 UTC
+# 27 IPs -- 2026-08-13 09:01 UTC
 # Uso:  descargar este archivo al router y correr  /import c2-badbox.rsc
 # Crea/actualiza el address-list 'badbox-c2'. NO dropea por si solo:
 # al final hay un ejemplo de regla, comentado, para que decidas vos.
@@ -29,6 +29,7 @@ add list=badbox-c2 address=144.217.195.210 comment="BADBOX2 C2 · :9903 · AS162
 add list=badbox-c2 address=154.39.72.88 comment="BADBOX2 C2 · :2918 · AS40065 CNSERVERS - CNSERVERS LLC, US"
 add list=badbox-c2 address=154.44.8.142 comment="BADBOX2 C2 · :18081 · mineria Monero · AS979 NETLAB-SDN - NetLab Global, US"
 add list=badbox-c2 address=154.83.197.187 comment="BADBOX2 C2 · :9998 · AS135377 UCLOUD-HK-AS-AP - UCLOUD INFORMATION TEC, SC"
+add list=badbox-c2 address=185.93.89.72 comment="BADBOX2 C2 · :80 · AS213790 LimitedNetwork-AS - Limited Network LTD, IR"
 add list=badbox-c2 address=192.99.215.40 comment="BADBOX2 C2 · AS16276 OVH - OVH SAS, CA"
 add list=badbox-c2 address=192.254.87.10 comment="BADBOX2 C2 · :9998 · AS21859 ZEN-ECN - Zenlayer Inc, US"
 
