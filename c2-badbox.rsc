@@ -1,5 +1,5 @@
 # BADBOX 2.0 / Vo1d / Kimwolf -- IPs de servidores de control (C2)
-# 27 IPs -- 2026-08-13 09:01 UTC
+# 30 IPs -- 2026-08-14 03:40 UTC
 # Uso:  descargar este archivo al router y correr  /import c2-badbox.rsc
 # Crea/actualiza el address-list 'badbox-c2'. NO dropea por si solo:
 # al final hay un ejemplo de regla, comentado, para que decidas vos.
@@ -9,8 +9,11 @@ add list=badbox-c2 address=8.222.223.201 comment="BADBOX2 C2 · :1883 · MQTT C2
 add list=badbox-c2 address=15.204.53.165 comment="BADBOX2 C2 · :9929 · AS16276 OVH - OVH SAS, US"
 add list=badbox-c2 address=34.41.139.193 comment="BADBOX2 C2 · :55500 · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US"
 add list=badbox-c2 address=35.241.108.36 comment="BADBOX2 C2 · :7890 · proxy (Clash/Mihomo) · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US"
+add list=badbox-c2 address=43.102.213.2 comment="BADBOX2 C2 · :146 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG"
 add list=badbox-c2 address=43.102.213.93 comment="BADBOX2 C2 · :279 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG"
+add list=badbox-c2 address=43.117.206.23 comment="BADBOX2 C2 · :115 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG"
 add list=badbox-c2 address=43.134.123.123 comment="BADBOX2 C2 · :239,286 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG"
+add list=badbox-c2 address=43.134.237.68 comment="BADBOX2 C2 · :115 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG"
 add list=badbox-c2 address=43.135.147.227 comment="BADBOX2 C2 · :242 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG"
 add list=badbox-c2 address=45.78.212.78 comment="BADBOX2 C2 · :245,290 · AS150436 BYTEPLUS-AS-AP - Byteplus Pte. Ltd., SG"
 add list=badbox-c2 address=46.8.9.225 comment="BADBOX2 C2 · :18081 · mineria Monero · AS60592 GRANSY - Gransy s.r.o., CZ"
