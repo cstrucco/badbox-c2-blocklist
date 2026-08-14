@@ -1,16 +1,18 @@
 # BADBOX 2.0 / Vo1d / Kimwolf -- IPs de servidores de control (C2)
-# 30 IPs -- actualizado 2026-08-14 03:40 UTC -- generado automaticamente
+# 33 IPs -- actualizado 2026-08-14 09:40 UTC -- generado automaticamente
 #
 8.222.223.201      # BADBOX2 C2 · :1883 · MQTT C2 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 15.204.53.165      # BADBOX2 C2 · :9929 · AS16276 OVH - OVH SAS, US
 34.41.139.193      # BADBOX2 C2 · :55500 · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US
 35.241.108.36      # BADBOX2 C2 · :7890 · proxy (Clash/Mihomo) · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US
+43.102.24.164      # BADBOX2 C2 · :191 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 43.102.213.2       # BADBOX2 C2 · :146 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 43.102.213.93      # BADBOX2 C2 · :279 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 43.117.206.23      # BADBOX2 C2 · :115 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 43.134.123.123     # BADBOX2 C2 · :239,286 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
 43.134.237.68      # BADBOX2 C2 · :115 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
 43.135.147.227     # BADBOX2 C2 · :242 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
+43.153.108.202     # BADBOX2 C2 · :191 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
 45.78.212.78       # BADBOX2 C2 · :245,290 · AS150436 BYTEPLUS-AS-AP - Byteplus Pte. Ltd., SG
 46.8.9.225         # BADBOX2 C2 · :18081 · mineria Monero · AS60592 GRANSY - Gransy s.r.o., CZ
 46.8.9.226         # BADBOX2 C2 · :18081 · mineria Monero · AS60592 GRANSY - Gransy s.r.o., CZ
@@ -28,6 +30,7 @@
 154.39.72.88       # BADBOX2 C2 · :2918 · AS40065 CNSERVERS - CNSERVERS LLC, US
 154.44.8.142       # BADBOX2 C2 · :18081 · mineria Monero · AS979 NETLAB-SDN - NetLab Global, US
 154.83.197.187     # BADBOX2 C2 · :9998 · AS135377 UCLOUD-HK-AS-AP - UCLOUD INFORMATION TEC, SC
+165.154.172.122    # BADBOX2 C2 · :191 · AS135377 UCLOUD-HK-AS-AP - UCLOUD INFORMATION TEC, HK
 185.93.89.72       # BADBOX2 C2 · :80 · AS213790 LimitedNetwork-AS - Limited Network LTD, IR
 192.99.215.40      # BADBOX2 C2 · AS16276 OVH - OVH SAS, CA
 192.254.87.10      # BADBOX2 C2 · :9998 · AS21859 ZEN-ECN - Zenlayer Inc, US
