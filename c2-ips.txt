@@ -1,18 +1,17 @@
 # BADBOX 2.0 / Vo1d / Kimwolf -- IPs de servidores de control (C2)
-# 34 IPs -- actualizado 2026-08-14 17:05 UTC -- generado automaticamente
+# 33 IPs -- actualizado 2026-08-16 03:10 UTC -- generado automaticamente
 #
 8.222.223.201      # BADBOX2 C2 · :1883 · MQTT C2 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 15.204.53.165      # BADBOX2 C2 · :9929 · AS16276 OVH - OVH SAS, US
 34.41.139.193      # BADBOX2 C2 · :55500 · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US
 35.241.108.36      # BADBOX2 C2 · :7890 · proxy (Clash/Mihomo) · AS396982 GOOGLE-CLOUD-PLATFORM - Google LLC, US
 43.102.213.93      # BADBOX2 C2 · :279 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
-43.117.206.16/29   # BADBOX2 C2
 43.117.206.19      # BADBOX2 C2 · :290 · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
-43.133.43.24/29    # BADBOX2 C2
+43.117.206.23      # BADBOX2 C2 · :290 · proxy residencial · AS45102 ALIBABA-CN-NET - Alibaba (US) Technology, SG
 43.133.43.28       # BADBOX2 C2 · :223 · proxy residencial · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
 43.134.123.123     # BADBOX2 C2 · :239,286 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
 43.135.147.227     # BADBOX2 C2 · :242 · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
-43.135.174.48/29   # BADBOX2 C2
+43.135.174.53      # BADBOX2 C2 · proxy residencial · AS132203 TENCENT-NET-AP-CN - Tencent Building, SG
 45.78.212.78       # BADBOX2 C2 · :245,290 · AS150436 BYTEPLUS-AS-AP - Byteplus Pte. Ltd., SG
 46.8.9.225         # BADBOX2 C2 · :18081 · mineria Monero · AS60592 GRANSY - Gransy s.r.o., CZ
 46.8.9.226         # BADBOX2 C2 · :18081 · mineria Monero · AS60592 GRANSY - Gransy s.r.o., CZ
